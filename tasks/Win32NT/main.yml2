@@ -12,9 +12,9 @@
     update_password: always
     state: present
 
-- name: Create slave windows remote file system root
+- name: Create jenkins slave home directory
   win_file:
-    path: "{{ slave_windows_remotefs }}"
+    path: "{{ jenkins_slave_windows_home }}"
     state: directory
 
 - name: Download agent.jar from jenkins master

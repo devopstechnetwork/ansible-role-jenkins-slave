@@ -24,6 +24,14 @@
     shell: /bin/bash
   become: true
 
+- name: Set authorized key
+  authorized_key:
+    user: "{{ jenkins_slave_linux_jenkins_username }}"
+    state: present
+    key: "{{ jenkins_slave_linux_jenkins_public_key }}"
+  become: true
+  when: jenkins_slave_linux_jenkins_public_key | trim
+
 - name: Create jenkins slave home directory
   file:
     path: "{{ jenkins_slave_linux_home }}"
@@ -31,14 +39,5 @@
     owner: "{{ jenkins_slave_linux_jenkins_username }}"
     group: "{{ jenkins_slave_linux_jenkins_username }}"
     mode: "0755"
-  become: true
-  when: jenkins_slave_linux_home | trim
-
-- name: Download agent.jar from jenkins master
-  get_url:
-    url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
-    dest: "{{ jenkins_slave_linux_home }}/agent.jar"
-    owner: "{{ jenkins_slave_username }}"
-    group: "{{ jenkins_slave_username }}"
   become: true
   when: jenkins_slave_linux_home | trim
