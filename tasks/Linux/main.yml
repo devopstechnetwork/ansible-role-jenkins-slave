@@ -34,11 +34,17 @@
   become: true
   when: jenkins_slave_linux_home | trim
 
+# - name: Download agent.jar from jenkins master
+#   get_url:
+#     url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
+#     dest: "{{ jenkins_slave_linux_home }}/agent.jar"
+#     owner: "{{ jenkins_slave_linux_jenkins_username }}"
+#     group: "{{ jenkins_slave_linux_jenkins_username }}"
+#   become: true
+#   when: jenkins_slave_linux_home | trim
+
 - name: Download agent.jar from jenkins master
-  get_url:
-    url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
-    dest: "{{ jenkins_slave_linux_home }}/agent.jar"
-    owner: "{{ jenkins_slave_linux_jenkins_username }}"
-    group: "{{ jenkins_slave_linux_jenkins_username }}"
+  shell: |
+    curl {{ jenkins_master_url }}/jnlpJars/agent.jar -o {{ jenkins_slave_linux_home }}/agent.jar
   become: true
   when: jenkins_slave_linux_home | trim
