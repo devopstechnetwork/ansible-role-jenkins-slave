@@ -38,8 +38,8 @@
   get_url:
     url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
     dest: "tmp/agent.jar"
-    owner: "{{ jenkins_slave_linux_jenkins_username }}"
-    group: "{{ jenkins_slave_linux_jenkins_username }}"
+    #owner: "{{ jenkins_slave_linux_jenkins_username }}"
+    #group: "{{ jenkins_slave_linux_jenkins_username }}"
   #become: true
   delegate_to: localhost
   when: jenkins_slave_linux_home | trim
