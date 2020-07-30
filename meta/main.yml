@@ -1,0 +1,24 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: jenkins-slave
+  author: edward
+  description: Jenkins Slaves installation and configuration.
+  company: "Philips"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+    - name: Windows
+      versions:
+        - 2016
+        - 2019
+  galaxy_tags:
+    - jenkins
+    - slave
+    - development
