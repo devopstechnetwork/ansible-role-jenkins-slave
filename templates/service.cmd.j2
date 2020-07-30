@@ -1,0 +1,1 @@
+"{{ java_home }}\bin\java.exe" -Xrs{% if slave_windows_java_opts | trim != '' %} {{ slave_windows_java_opts }}{% endif %} -jar "{{ slave_windows_remotefs }}/agent.jar" -jnlpUrl {{ master_url }}/computer/{{ slave_windows_agent_name }}/slave-agent.jnlp{% if slave_windows_agent_secret | trim != '' %} -secret {{ slave_windows_agent_secret }}{% endif %}
