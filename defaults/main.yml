@@ -7,6 +7,7 @@ jenkins_slave_linux_home: ""
 jenkins_slave_linux_jenkins_username: jenkins
 jenkins_slave_linux_jenkins_password: jenkins
 jenkins_slave_linux_jenkins_public_key: ""
+jenkins_slave_linux_agent_name: jenkins-slave-linux-01
 
 # jenkins windows slave
 jenkins_slave_windows_agent_name: windows_agent

@@ -42,8 +42,19 @@
     group: "{{ jenkins_slave_linux_jenkins_username }}"
   become: true
   when: jenkins_slave_linux_home | trim
-# - name: Download agent.jar from jenkins master
-#   shell: |
-#     curl {{ jenkins_master_url }}/jnlpJars/agent.jar -o {{ jenkins_slave_linux_home }}/agent.jar
-#   become: true
-#   when: jenkins_slave_linux_home | trim
+
+- name: Get the secret jenkins slave
+  uri:
+    url: "{{ jenkins_master_url }}/computer/{{ jenkins_slave_linux_agent_name }}/slave-agent.jnlp"
+    method: GET
+    force_basic_auth: true
+    user: "{{ jenkins_slave_linux_jenkins_username }}"
+    password: "{{ jenkins_slave_linux_jenkins_password }}"
+    return_content: true
+  register: jenkins_slave_jnlp_file
+
+- name: Extract Slave secret from http response
+  set_fact:
+    jenkins_slave_agent_secret: "{{ jenkins_slave_jnlp_file.content | regex_search('([a-z0-9]*)(?=</argument>)') }}"
+
+- debug: msg="{{ jenkins_slave_agent_secret }}"
