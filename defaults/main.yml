@@ -1,6 +1,8 @@
 ---
 # jenkins master
 jenkins_master_url: "http://127.0.0.1:8080"
+jenkins_master_username: wei.guan@philips.com
+jenkins_master_password: hardWork@1
 
 # jenkins linux slave
 jenkins_slave_linux_home: ""
