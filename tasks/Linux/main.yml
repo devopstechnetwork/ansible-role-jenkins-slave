@@ -48,8 +48,8 @@
     url: "{{ jenkins_master_url }}/computer/{{ jenkins_slave_linux_agent_name }}/slave-agent.jnlp"
     method: GET
     force_basic_auth: true
-    user: "{{ jenkins_slave_linux_jenkins_username }}"
-    password: "{{ jenkins_slave_linux_jenkins_password }}"
+    user: "{{ jenkins_master_username }}"
+    password: "{{ jenkins_master_password }}"
     return_content: true
   register: jenkins_slave_jnlp_file
 
