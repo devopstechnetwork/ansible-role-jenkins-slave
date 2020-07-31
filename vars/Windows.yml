@@ -1,3 +1,5 @@
 ---
-requirements:
+jenkins_slave_requirements:
   - openjdk8
+
+jenkins_slave_home: C:/Jenkins

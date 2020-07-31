@@ -4,14 +4,7 @@ jenkins_master_url: http://127.0.0.1:8080
 jenkins_master_username: admin
 jenkins_master_password: admin
 
+jenkins_slave_username: jenkins
+jenkins_slave_password: jenkins
 jenkins_slave_node_name: "{{ inventory_hostname_short }}"
 jenkins_slave_java_opts: ""
-
-# jenkins windows slave
-jenkins_slave_windows_agent_name: windows_agent
-jenkins_slave_windows_agent_secret: ""
-jenkins_slave_windows_service_name: jenkins-agent
-jenkins_slave_windows_java_opts: ""
-jenkins_slave_windows_remotefs: C:/Jenkins
-jenkins_slave_windows_jenkins_username: jenkins
-jenkins_slave_windows_jenkins_password: jenkins
