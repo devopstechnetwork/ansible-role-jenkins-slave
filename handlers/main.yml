@@ -1,7 +1,0 @@
----
-- name: Retart the jenkins agent service
-  win_service:
-    name: "{{ slave_windows_service_name }}"
-    state: restarted
-    username: "{{ slave_windows_jenkins_username }}"
-    password: "{{ slave_windows_jenkins_password }}"

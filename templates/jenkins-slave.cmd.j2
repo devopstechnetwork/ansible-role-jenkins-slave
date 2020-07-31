@@ -1,0 +1,5 @@
+::jinja2: trim_blocks:False
+::
+:: {{ ansible_managed }}
+::
+"{{ java_home }}\bin\java.exe" -Xrs {% if jenkins_slave_java_opts | trim != '' %}{{ jenkins_slave_java_opts }}{% endif %} -jar "{{ jenkins_slave_home }}/agent.jar" -jnlpUrl {{ jenkins_master_url }}/computer/{{ jenkins_slave_node_name }}/slave-agent.jnlp {% if jenkins_slave_node_secret | trim != '' %}-secret {{ jenkins_slave_node_secret }}{% endif %}
