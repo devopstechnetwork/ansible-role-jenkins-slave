@@ -1,7 +1,7 @@
 ---
 - name: Install requirements
   apt:
-    name: "{{ requirements }}"
+    name: "{{ jenkins_slave_requirements }}"
     update_cache: yes
     state: present
   retries: 3
@@ -9,27 +9,27 @@
   register: result
   until: result is success
   become: true
-  when: requirements | default([]) | length > 0
+  when: jenkins_slave_requirements | default([]) | length > 0
 
 - name: Create jenkins user
   user:
-    name: "{{ jenkins_slave_linux_jenkins_username }}"
+    name: "{{ jenkins_slave_username }}"
     password: >-
-      {{ jenkins_slave_linux_jenkins_password
+      {{ jenkins_slave_password
           | password_hash('sha512', 65535 | random(seed=inventory_hostname)
           | string) }}
     update_password: always
-    state: present
     createhome: true
     shell: /bin/bash
+    state: present
   become: true
 
 - name: Create jenkins slave home directory
   file:
-    path: "{{ jenkins_slave_linux_home }}"
+    path: "{{ jenkins_slave_home }}"
     state: directory
-    owner: "{{ jenkins_slave_linux_jenkins_username }}"
-    group: "{{ jenkins_slave_linux_jenkins_username }}"
+    owner: "{{ jenkins_slave_username }}"
+    group: "{{ jenkins_slave_username }}"
     mode: "0755"
   become: true
   when: jenkins_slave_linux_home | trim
@@ -37,33 +37,44 @@
 - name: Download agent.jar from jenkins master
   get_url:
     url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
-    dest: "{{ jenkins_slave_linux_home }}/agent.jar"
-    owner: "{{ jenkins_slave_linux_jenkins_username }}"
-    group: "{{ jenkins_slave_linux_jenkins_username }}"
+    dest: "{{ jenkins_slave_home }}/agent.jar"
+    owner: "{{ jenkins_slave_username }}"
+    group: "{{ jenkins_slave_username }}"
   become: true
-  when: jenkins_slave_linux_home | trim
+  when: jenkins_slave_home | trim
 
-# - name: Get jnlp content of the jenkins slave
-#   uri:
-#     url: "{{ jenkins_master_url }}/computer/{{ jenkins_slave_linux_agent_name }}/slave-agent.jnlp"
-#     method: GET
-#     force_basic_auth: true
-#     user: "{{ jenkins_master_username }}"
-#     password: "{{ jenkins_master_password }}"
-#     return_content: true
-#   register: jenkins_slave_jnlp_file
-
-# - name: Extract agent secret from the jnlp content
-#   set_fact:
-#     jenkins_slave_agent_secret: "{{ jenkins_slave_jnlp_file.content | regex_search('([a-z0-9]*)(?=</argument>)') }}"
-
-- name: Get agent secret of the jenkins slave
-  jenkins_script:
-    script: "println(Jenkins.instance.pluginManager.plugins)"
+- name: Get jnlp content of the jenkins slave
+  uri:
+    url: "{{ jenkins_master_url }}/computer/{{ jenkins_slave_node_name }}/slave-agent.jnlp"
+    method: GET
+    force_basic_auth: true
     user: "{{ jenkins_master_username }}"
     password: "{{ jenkins_master_password }}"
-    url: "{{ jenkins_master_url }}"
-    validate_certs: false
-  register: result
+    return_content: true
+  register: jenkins_slave_jnlp_file
 
-- debug: msg="{{ result }}"
+- name: Extract agent secret from the jnlp content
+  set_fact:
+    jenkins_slave_node_secret: "{{ jenkins_slave_jnlp_file.content | regex_search('([a-z0-9]*)(?=</argument>)') }}"
+
+- name: Copy jenkins slave service file
+  template:
+    src: jenkins-slave.service.j2
+    dest: /lib/systemd/system/jenkins-slave.service
+  register: jenkins_slave_service_file
+  become: true
+
+- name: Restart jenkins slave service
+  systemd:
+    name: jenkins-slave
+    state: restarted
+    daemon_reload: true
+  when: jenkins_slave_service_file.changed
+  become: true
+
+- name: Ensure jenkins slave service is started and enabled at boot
+  systemd:
+    name: jenkins-slave
+    state: started
+    enabled: true
+  become: true
