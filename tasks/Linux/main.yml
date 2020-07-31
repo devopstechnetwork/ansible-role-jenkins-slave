@@ -1,5 +1,5 @@
 ---
-- name: Install requirements
+- name: Install jenkins slave requirements
   apt:
     name: "{{ jenkins_slave_requirements }}"
     update_cache: yes
@@ -11,7 +11,7 @@
   become: true
   when: jenkins_slave_requirements | default([]) | length > 0
 
-- name: Create jenkins user
+- name: Create jenkins slave user
   user:
     name: "{{ jenkins_slave_username }}"
     password: >-
@@ -54,7 +54,7 @@
     return_content: true
   register: jenkins_slave_jnlp_file
 
-- name: Extract agent secret from the jnlp content
+- name: Extract node secret from the jnlp content
   set_fact:
     jenkins_slave_node_secret: "{{ jenkins_slave_jnlp_file.content | regex_search('([a-z0-9]*)(?=</argument>)') }}"
 
