@@ -25,7 +25,7 @@
   register: java_home_env
   changed_when: false
 
-- name: Copy jenkins agent service file
+- name: Copy jenkins slave service file
   win_template:
     src: jenkins-slave.cmd.j2
     dest: "{{ jenkins_slave_home }}/jenkins-slave.cmd"
