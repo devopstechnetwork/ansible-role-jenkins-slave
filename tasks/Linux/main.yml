@@ -32,7 +32,7 @@
     group: "{{ jenkins_slave_username }}"
     mode: "0755"
   become: true
-  when: jenkins_slave_linux_home | trim
+  when: jenkins_slave_home | trim
 
 - name: Download agent.jar from jenkins master
   get_url:
@@ -40,6 +40,7 @@
     dest: "{{ jenkins_slave_home }}/agent.jar"
     owner: "{{ jenkins_slave_username }}"
     group: "{{ jenkins_slave_username }}"
+    force: true
   become: true
   when: jenkins_slave_home | trim
 
