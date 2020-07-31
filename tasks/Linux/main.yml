@@ -34,48 +34,4 @@
   become: true
   when: jenkins_slave_home | trim
 
-- name: Download agent.jar from jenkins master
-  get_url:
-    url: "{{ jenkins_master_url }}/jnlpJars/agent.jar"
-    dest: "{{ jenkins_slave_home }}/agent.jar"
-    owner: "{{ jenkins_slave_username }}"
-    group: "{{ jenkins_slave_username }}"
-    force: true
-  become: true
-  when: jenkins_slave_home | trim
-
-- name: Get jnlp content of the jenkins slave
-  uri:
-    url: "{{ jenkins_master_url }}/computer/{{ jenkins_slave_node_name }}/slave-agent.jnlp"
-    method: GET
-    force_basic_auth: true
-    user: "{{ jenkins_master_username }}"
-    password: "{{ jenkins_master_password }}"
-    return_content: true
-  register: jenkins_slave_jnlp_file
-
-- name: Extract node secret from the jnlp content
-  set_fact:
-    jenkins_slave_node_secret: "{{ jenkins_slave_jnlp_file.content | regex_search('([a-z0-9]*)(?=</argument>)') }}"
-
-- name: Copy jenkins slave service file
-  template:
-    src: jenkins-slave.service.j2
-    dest: /lib/systemd/system/jenkins-slave.service
-  register: jenkins_slave_service_file
-  become: true
-
-- name: Restart jenkins slave service
-  systemd:
-    name: jenkins-slave
-    state: restarted
-    daemon_reload: true
-  when: jenkins_slave_service_file.changed
-  become: true
-
-- name: Ensure jenkins slave service is started and enabled at boot
-  systemd:
-    name: jenkins-slave
-    state: started
-    enabled: true
-  become: true
+- import_tasks: service.yml
