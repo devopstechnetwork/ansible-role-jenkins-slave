@@ -8,7 +8,7 @@ Wants=network.target
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/java -Xrs {% if jenkins_slave_java_opts | trim != '' %}{{ jenkins_slave_java_opts }}{% endif %} -jar {{ jenkins_slave_home }}/slave.jar -jnlpUrl {{ jenkins_master_url }}/computer/{{ jenkins_slave_node_name }}/slave-agent.jnlp {% if jenkins_slave_node_secret | trim != '' %}-secret {{ jenkins_slave_node_secret }}{% endif %}
+ExecStart=/usr/bin/java -Xrs {% if jenkins_slave_java_opts | trim != '' %}{{ jenkins_slave_java_opts }}{% endif %} -jar "{{ jenkins_slave_home }}/agent.jar" -jnlpUrl {{ jenkins_master_url }}/computer/{{ jenkins_slave_node_name }}/slave-agent.jnlp {% if jenkins_slave_node_secret | trim != '' %}-secret {{ jenkins_slave_node_secret }}{% endif %}
 User={{ jenkins_slave_username }}
 Group={{ jenkins_slave_username }}
 PermissionsStartOnly=true
