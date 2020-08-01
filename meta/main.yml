@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   role_name: jenkins-slave
   author: edward
-  description: Jenkins Slaves installation and configuration.
+  description: Install jenkins slave jnlp service.
   company: "Philips"
   license: "license (BSD, MIT)"
   min_ansible_version: 2.4
@@ -22,3 +22,4 @@ galaxy_info:
     - jenkins
     - slave
     - development
+    - jnlp
