@@ -8,6 +8,8 @@ None.
 
 ## Role Variables
 
+Available variables are listed below, along with default values (see `defaults/main.yml`):
+
 ```
 # jenkins master
 jenkins_master_url: http://127.0.0.1:8080
