@@ -1,16 +1,4 @@
 ---
-- name: Install jenkins slave requirements
-  apt:
-    name: "{{ jenkins_slave_requirements }}"
-    update_cache: yes
-    state: present
-  retries: 3
-  delay: 2
-  register: result
-  until: result is success
-  become: true
-  when: jenkins_slave_requirements | default([]) | length > 0
-
 - name: Create jenkins slave user
   user:
     name: "{{ jenkins_slave_username }}"

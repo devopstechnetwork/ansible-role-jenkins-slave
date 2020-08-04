@@ -1,4 +1,2 @@
 ---
-jenkins_slave_requirements: []
-
 jenkins_slave_home: /opt/jenkins

@@ -1,10 +1,4 @@
 ---
-- name: Install jenkins slave requirements
-  win_chocolatey:
-    name: "{{ jenkins_slave_requirements }}"
-    state: present
-  when: jenkins_slave_requirements | default([]) | length > 0
-
 - name: Create jenkins slave user
   win_user:
     name: "{{ jenkins_slave_username }}"

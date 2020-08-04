@@ -1,5 +1,2 @@
 ---
-jenkins_slave_requirements:
-  - openjdk-8-jre-headless
-
 jenkins_slave_home: /opt/jenkins
