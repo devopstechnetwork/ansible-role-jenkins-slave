@@ -15,7 +15,7 @@
     method: GET
     force_basic_auth: true
     user: "{{ jenkins_master_username }}"
-    password: "{{ jenkins_master_password }}"
+    password: "{{ jenkins_master_password_or_token }}"
     return_content: true
   register: jenkins_slave_jnlp_file
 

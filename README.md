@@ -14,7 +14,7 @@ Available variables are listed below, along with default values (see `defaults/m
 # jenkins master
 jenkins_master_url: http://127.0.0.1:8080
 jenkins_master_username: admin
-jenkins_master_password: admin
+jenkins_master_password_or_token: admin
 
 # jenkins slave
 jenkins_slave_username: jenkins
@@ -30,9 +30,9 @@ jenkins_slave_home: C:/Jenkins
 
 `jenkins_master_url` is the URL of your jenkins site.
 
-`jenkins_master_username` is the login username of your jenkins site.
+`jenkins_master_username` is the login username of your jenkins user.
 
-`jenkins_master_password` is the login password of your jenkins site.
+`jenkins_master_password_or_token` is the login password or api token of your jenkins user.
 
 `jenkins_slave_username` is the jenkins slave account username on jenkins slave machine.
 

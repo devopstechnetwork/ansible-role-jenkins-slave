@@ -2,7 +2,7 @@
 # jenkins master
 jenkins_master_url: http://127.0.0.1:8080
 jenkins_master_username: admin
-jenkins_master_password: admin
+jenkins_master_password_or_token: admin
 
 # jenkins slave
 jenkins_slave_username: jenkins
