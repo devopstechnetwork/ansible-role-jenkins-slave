@@ -48,10 +48,42 @@ jenkins_slave_home: C:/Jenkins
 
 None.
 
+## Inventory example
+
+```
+[jenkins_slave_linux]
+jenkins-slave-linux-01 ansible_host=192.168.56.11 ansible_user='vagrant' ansible_password='vagrant' jenkins_slave_node_name=jenkins-slave-linux-01
+
+[jenkins_slave_windows]
+jenkins-slave-windows-01 ansible_host=192.168.56.12 ansible_user='vagrant' ansible_password='vagrant' jenkins_slave_node_name=jenkins-slave-windows-01
+
+[jenkins_slave:children]
+jenkins_slave_linux
+jenkins_slave_windows
+
+[jenkins_slave_linux:vars]
+ansible_port=22
+ansible_python_interpreter=/usr/bin/python3
+jenkins_slave_home=/opt/jenkins
+
+[jenkins_slave_windows:vars]
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_scheme=http
+jenkins_slave_home=C:/Jenkins
+```
+
 ## Example Playbook
+
+this role don't install java package, so you need install java first.
 
 requirements.yml
 ```
+- name: java
+  src: <repo_url>
+  version: <branch_name>
+  scm: git
+
 - name: jenkins-slave
   src: <repo_url>
   version: <branch_name>
@@ -60,7 +92,14 @@ requirements.yml
 
 playbook.yml
 ```
-- hosts: servers
+- hosts: jenkins_slave
+  vars:
+    jenkins_master_url: http://192.168.56.21/jenkins
+    jenkins_master_username: admin
+    jenkins_master_password_or_token: 1194d76e992c37e2a546e238fb528872b0
+    jenkins_slave_username: jenkins
+    jenkins_slave_password: Q1w2e3r4
   roles:
+    - java
     - jenkins-slave
 ```
